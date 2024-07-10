@@ -13,7 +13,8 @@ import {
     changeCurrentPassword,
     updateUserAvatar,
     getDailyAppointments,
-    refreshAccessToken
+    refreshAccessToken,
+    getRegisteredStaff
 } from "../controllers/user.controller.js"
 import { verifyJWT } from "../middlewares/auth.middleware.js"
 import { verifyRefreshToken } from "../middlewares/refreshToken.middleware.js";
@@ -42,6 +43,7 @@ router.route("/getCurrentUser").get(verifyJWT, getCurrentUser);
 router.route("/dailyAppointments").get(verifyJWT, getDailyAppointments);
 
 router.route("/refreshAccessToken").post(verifyRefreshToken, refreshAccessToken);
+router.route("/getStaffInfo").get(getRegisteredStaff);
 
 
 export default router;

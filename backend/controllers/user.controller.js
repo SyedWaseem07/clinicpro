@@ -297,6 +297,10 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     }
 })
 
+const getRegisteredStaff = asyncHandler(async (req, res) => {
+    const staff = await User.find();
+    return res.status(200).json(new ApiResponse(200, staff, "Staff data fetched successfully"));
+})
 export {
     registerUser,
     loginUser,
@@ -310,5 +314,6 @@ export {
     changeCurrentPassword,
     updateUserAvatar,
     getDailyAppointments,
-    refreshAccessToken
+    refreshAccessToken,
+    getRegisteredStaff
 }

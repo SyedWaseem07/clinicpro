@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Doctor from "../assets/doctor.png"
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import Header from '../components/Header'
 import axios from 'axios'
 import toast from 'react-hot-toast'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Footer from '../components/Footer'
 
 const HomePage = ({ theme, setTheme, user }) => {
-  const navigator = useNavigate();
+  const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationFn: async ({ username, password, role }) => {
@@ -23,7 +23,10 @@ const HomePage = ({ theme, setTheme, user }) => {
       }
     },
     onSuccess: (data) => {
-      toast.success(`You are now ${data.data.data.role.charAt(0).toUpperCase() + data.data.data.role.substring(1)} of ClinicPro. Click on right side ${data.data.data.role.charAt(0).toUpperCase() + data.data.data.role.substring(1) + "'s Home button to explore"} `)
+      setLoading(false);
+      toast.success(`You are now ${data.data.data.role.charAt(0).toUpperCase() + data.data.data.role.substring(1)} of ClinicPro. Click on right side ${data.data.data.role.charAt(0).toUpperCase() + data.data.data.role.substring(1) + "'s Home button to explore"} `, {
+        duration: 7000,
+      })
       queryClient.invalidateQueries({ queryKey: ['authUser'] })
     },
     onError: (error) => {
@@ -43,6 +46,7 @@ const HomePage = ({ theme, setTheme, user }) => {
       }
     },
     onSuccess: () => {
+      setLoading(true);
       queryClient.invalidateQueries({ queryKey: ['authUser'] })
     },
     onError: (error) => {
@@ -50,10 +54,14 @@ const HomePage = ({ theme, setTheme, user }) => {
     }
   })
   const handleDoctorClick = () => {
+    setLoading(true);
     if (user) {
       if (user.role !== "doctor") logout()
       else {
-        toast.success("You are already Doctor. Click on right side Doctor's Home button to explore");
+        setLoading(false);
+        toast.success("You are already Doctor. Click on right side Doctor's Home button to explore", {
+          duration: 3000,
+        });
         return;
       }
     }
@@ -63,15 +71,22 @@ const HomePage = ({ theme, setTheme, user }) => {
   }
 
   const handleReceptionistClick = () => {
+    setLoading(true);
     if (user) {
       if (user.role !== "receptionist") logout()
       else {
-        toast.success("You are already Receptionist. Click on right side Receptionist's Home button to explore");
+        setLoading(false);
+        toast.success("You are already Receptionist. Click on right side Receptionist's Home button to explore", {
+          duration: 3000,
+        });
         return;
       }
     }
     mutate({ username: "testreceptionist", password: "Test@1234", role: "receptionist" })
   }
+  if (loading) return <div className='flex justify-center items-center w-full h-screen'>
+    <span className="loading loading-ring text-primary loading-lg"></span>
+  </div>
   return (
     <div className='max-w-[1240px] w-full mx-auto'>
       <Header theme={theme} setTheme={setTheme} user={user} />

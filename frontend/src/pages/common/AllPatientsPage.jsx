@@ -31,7 +31,7 @@ const AllPatientsPage = ({ fromHome, fromSearch, fromUpdate }) => {
   }, [])
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && patients) {
       if (visitedPatients.length === 0) {
         setVisitedPatients(Array.from(patients));
         setUpdatePatientDetails(Array.from(patients));

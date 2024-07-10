@@ -58,7 +58,7 @@ const App = () => {
         const res = await axios.get('/api/v1/users/dailyAppointments');
         return res.data.data;
       } catch (error) {
-        toast.error("unable to fetch Todays Appointments")
+        if (authUser) toast.error("unable to fetch Todays Appointments");
         return [];
       }
     }
@@ -77,7 +77,7 @@ const App = () => {
       {authUser && location.pathname !== '/' && <Navbar user={authUser} theme={theme} setTheme={setTheme} />}
       <Routes>
         <Route path='/' element={<HomePage theme={theme} setTheme={setTheme} user={authUser} />} />
-        <Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to={`/user/${authUser.role}/`} />} />
+        <Route path='/login' element={!authUser ? <LoginPage theme={theme} setTheme={setTheme} user={authUser} /> : <Navigate to={`/user/${authUser.role}/`} />} />
         <Route path='user'>
           <Route path='receptionist' >
             <Route path='' element={authUser && authUser.role === "receptionist" ? <AllAppointmentsPage user={authUser} /> : <Navigate to="/" />} />

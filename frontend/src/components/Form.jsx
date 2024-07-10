@@ -103,8 +103,12 @@ const Form = ({ formData, setFormData, fromUpdatePatient, medicine, setMedicine,
 
   const handleReport = (e) => {
     e.preventDefault();
-    if (validateString(report.report_name) === 1 || !reportFile) {
+    if (validateString(report.report_name) === 1) {
       toast.error("Enter valid report name");
+      return;
+    }
+    if (!reportFile) {
+      toast.error("Select a report to add");
       return;
     }
     const reportData = new FormData();
@@ -116,6 +120,10 @@ const Form = ({ formData, setFormData, fromUpdatePatient, medicine, setMedicine,
 
   const handlePayment = (e) => {
     e.preventDefault();
+    if (payment.amount === '' || payment.amount <= 0) {
+      toast.error("Select valid amount");
+      return;
+    }
     setPayment({ ...payment, "patient_name": formData.patient_name })
     addPaymentCall({ ...payment, "patient_name": formData.patient_name });
   }

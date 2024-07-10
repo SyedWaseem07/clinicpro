@@ -107,7 +107,10 @@ const Profile = () => {
       toast.error("Enter valid 10 digit mobile no");
       return;
     }
-    mutate();
+    toast.success("Profile updation is working successfully but I will not update in order to preserve direct login functionality given on homepage", {
+      duration: 8000,
+    });
+    // mutate();
   }
 
   const handleChange = (e) => {

@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast"
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
-const LoginPage = () => {
+const LoginPage = ({ theme, setTheme, user }) => {
   const [formData, setFormData] = useState({
     "username": "",
     "password": "",
@@ -30,7 +30,10 @@ const LoginPage = () => {
       queryClient.invalidateQueries({ queryKey: ['authUser'] })
     },
     onError: (error) => {
-      toast.error(error.message)
+      const index = error.message.indexOf("<pre>")
+      const Lastindex = error.message.indexOf("<br>")
+      const errMsg = error.message.substring(index + 5, Lastindex);
+      toast.error(errMsg)
     }
   })
 
@@ -44,7 +47,7 @@ const LoginPage = () => {
   }
   return (
     <div className='w-full max-w-[1240px] mx-auto'>
-      <Header />
+      <Header theme={theme} setTheme={setTheme} user={user} />
       <div className='flex flex-col md:flex-row justify-center items-center w-full gap-1 md:gap-10'>
         <img src={clinic} alt="" className="max-w-sm rounded-lg shadow-2xl h-48 md:h-96 bg-base" />
         <form className='flex flex-col gap-4 text-neutral-content py-8  px-14' onSubmit={handleSubmit}>
