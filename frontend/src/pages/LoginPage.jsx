@@ -30,10 +30,8 @@ const LoginPage = ({ theme, setTheme, user }) => {
       queryClient.invalidateQueries({ queryKey: ['authUser'] })
     },
     onError: (error) => {
-      const index = error.message.indexOf("<pre>")
-      const Lastindex = error.message.indexOf("<br>")
-      const errMsg = error.message.substring(index + 5, Lastindex);
-      toast.error(errMsg)
+      console.log(error.message)
+      toast.error(error.message)
     }
   })
 

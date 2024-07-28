@@ -61,7 +61,6 @@ const UpdatePatientDetails = () => {
       queryClient.invalidateQueries({ queryKey: ['allPatients'] });
     },
     onError: (error) => {
-      console.log("abjvhdbgjhmj")
       toast.error(error.message);
     }
   })

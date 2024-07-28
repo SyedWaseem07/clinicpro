@@ -24,9 +24,7 @@ const HomePage = ({ theme, setTheme, user }) => {
     },
     onSuccess: (data) => {
       setLoading(false);
-      toast.success(`You are now ${data.data.data.role.charAt(0).toUpperCase() + data.data.data.role.substring(1)} of ClinicPro. Click on right side ${data.data.data.role.charAt(0).toUpperCase() + data.data.data.role.substring(1) + "'s Home button to explore"} `, {
-        duration: 7000,
-      })
+      toast.success(`You are now ${data.data.data.role.charAt(0).toUpperCase() + data.data.data.role.substring(1)} of ClinicPro. Click on right side ${data.data.data.role.charAt(0).toUpperCase() + data.data.data.role.substring(1) + "'s Home button to explore"} `)
       queryClient.invalidateQueries({ queryKey: ['authUser'] })
     },
     onError: (error) => {
@@ -59,9 +57,7 @@ const HomePage = ({ theme, setTheme, user }) => {
       if (user.role !== "doctor") logout()
       else {
         setLoading(false);
-        toast.success("You are already Doctor. Click on right side Doctor's Home button to explore", {
-          duration: 3000,
-        });
+        toast.success("You are already Doctor. Click on right side Doctor's Home button to explore");
         return;
       }
     }
@@ -76,9 +72,7 @@ const HomePage = ({ theme, setTheme, user }) => {
       if (user.role !== "receptionist") logout()
       else {
         setLoading(false);
-        toast.success("You are already Receptionist. Click on right side Receptionist's Home button to explore", {
-          duration: 3000,
-        });
+        toast.success("You are already Receptionist. Click on right side Receptionist's Home button to explore");
         return;
       }
     }
@@ -104,14 +98,14 @@ const HomePage = ({ theme, setTheme, user }) => {
               It includes 2 roles <span className={`${theme === "forest" ? "text-primary" : "text-secondary-content"} font-semibold text-lg`}>Doctor</span> and <span className={`${theme === "forest" ? "text-primary" : "text-secondary-content"} font-semibold text-lg`}>Receptionist</span> and features of both are listed in header
             </p>
             <NavLink to="/login"><button className="btn btn-primary">Get Started</button></NavLink>
-            <p className={`py-6 ${theme === "forest" ? "text-neutral-content" : "text-secondary-content"}`}>Wanna explore without putting effort of logging in <div className="dropdown dropdown-hover">
+            {user ? <p className={`py-6 ${theme === "forest" ? "text-neutral-content" : "text-secondary-content"}`}>You are now <NavLink to={`/user/${user.role}`} className={`font-bold no-underline hover:underline cursor-pointer ${theme === "forest" ? "text-primary" : "text-secondary-content"}`}>{user.role}</NavLink> of ClinicPro</p> : <p className={`py-6 ${theme === "forest" ? "text-neutral-content" : "text-secondary-content"}`}>Wanna explore without putting effort of logging in <div className="dropdown dropdown-hover">
               <div tabIndex={0} role="button" className={`font-bold no-underline hover:underline cursor-pointer ${theme === "forest" ? "text-primary" : "text-secondary-content"}`}>Click here</div>
               <ul tabIndex={0} className="dropdown-content menu rounded-box z-[1] w-52 p-2 shadow bg-base-300">
                 <li className='hover:bg-primary hover:text-primary-content rounded-full' onClick={handleDoctorClick} disabled={isPending}><button disabled={isPending}>Doctor{isPending && <span className="loading loading-spinner loading-sm text-primary-content"></span>}</button></li>
                 <li className='hover:bg-primary hover:text-primary-content rounded-full' onClick={handleReceptionistClick} disabled={isPending}><button disabled={isPending}>Receptionist{isPending && <span className="loading loading-spinner loading-sm text-primary-content"></span>}</button></li>
               </ul>
             </div>
-            </p>
+            </p>}
           </div>
         </div>
       </div>

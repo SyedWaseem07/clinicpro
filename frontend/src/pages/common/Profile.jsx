@@ -108,7 +108,7 @@ const Profile = () => {
       return;
     }
     toast.success("Profile updation is working successfully but I will not update in order to preserve direct login functionality given on homepage", {
-      duration: 8000,
+      duration: 5000,
     });
     // mutate();
   }
