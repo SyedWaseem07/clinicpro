@@ -33,21 +33,21 @@ const PatientDetailsPage = () => {
         const index = error.response.data.indexOf("<pre>")
         const Lastindex = error.response.data.indexOf("<br>")
         const errMsg = error.response.data.substring(index + 5, Lastindex);
-        throw new Error(errMsg);
+        toast.error(errMsg)
       }
     },
-    onSuccess: () => {
-      toast.success("Patient deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ['allPatients'] })
-      queryClient.invalidateQueries({ queryKey: ['searchPatients'] })
-      let url = '';
-      if (fromSearch && fromUpdate) url = `/user/${authUser.role}/updatePatient`
-      else if (fromSearch) url = `/user/${authUser.role}/searchPatient`
-      else url = `/user/${authUser.role}/patients`
-      navigator(url)
-    },
-    onError: (error) => {
-      toast.error(error.message);
+    onSuccess: (data) => {
+      if (data) {
+        toast.success("Patient deleted successfully");
+        queryClient.invalidateQueries({ queryKey: ['allPatients'] })
+        queryClient.invalidateQueries({ queryKey: ['searchPatients'] })
+        let url = '';
+        if (fromSearch && fromUpdate) url = `/user/${authUser.role}/updatePatient`
+        else if (fromSearch) url = `/user/${authUser.role}/searchPatient`
+        else url = `/user/${authUser.role}/patients`
+        navigator(url)
+      }
+
     }
   })
 

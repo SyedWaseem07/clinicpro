@@ -16,25 +16,24 @@ const AddAppointment = () => {
         const index = error.response.data.indexOf("<pre>")
         const Lastindex = error.response.data.indexOf("<br>")
         const errMsg = error.response.data.substring(index + 5, Lastindex);
-        throw new Error(errMsg);
+        toast.error(errMsg)
       }
     },
-    onSuccess: () => {
-      toast.success("Appointment added successfully");
-      queryClient.invalidateQueries({ queryKey: ['authUser'] });
-      queryClient.invalidateQueries({ queryKey: ['allAppointments'] });
-      queryClient.invalidateQueries({ queryKey: ['todaysAppointments'] });
-      setFormData({
-        "patient_name": "",
-        "mobile_no": "",
-        "age": 0,
-        "gender": "",
-        "date_of_app": "",
-        "time_of_app": ""
-      })
-    },
-    onError: (error) => {
-      toast.error(error.message);
+    onSuccess: (data) => {
+      if (data) {
+        toast.success("Appointment added successfully");
+        queryClient.invalidateQueries({ queryKey: ['authUser'] });
+        queryClient.invalidateQueries({ queryKey: ['allAppointments'] });
+        queryClient.invalidateQueries({ queryKey: ['todaysAppointments'] });
+        setFormData({
+          "patient_name": "",
+          "mobile_no": "",
+          "age": 0,
+          "gender": "",
+          "date_of_app": "",
+          "time_of_app": ""
+        })
+      }
     }
   })
 

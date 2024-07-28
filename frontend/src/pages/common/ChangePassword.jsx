@@ -15,15 +15,12 @@ const ChangePassword = () => {
         const index = error.response.data.indexOf("<pre>")
         const Lastindex = error.response.data.indexOf("<br>")
         const errMsg = error.response.data.substring(index + 5, Lastindex);
-        throw new Error(errMsg);
+        toast.error(errMsg)
       }
     },
-    onSuccess: () => {
-      toast.success("Password changed successfully");
+    onSuccess: (data) => {
+      if (data) toast.success("Password changed successfully");
       queryClient.invalidateQueries({ queryKey: ['authUser'] });
-    },
-    onError: (error) => {
-      toast.error(error.message);
     }
   })
 

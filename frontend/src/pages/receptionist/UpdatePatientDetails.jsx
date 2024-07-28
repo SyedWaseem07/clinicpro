@@ -30,17 +30,17 @@ const UpdatePatientDetails = () => {
         const index = error.response.data.indexOf("<pre>")
         const Lastindex = error.response.data.indexOf("<br>")
         const errMsg = error.response.data.substring(index + 5, Lastindex);
-        throw new Error(errMsg);
+        toast.error(errMsg)
+
       }
     },
-    onSuccess: () => {
-      toast.success("Appointment of this patient deleted successfully");
-      setappLeft(prev => prev - 1);
-      queryClient.invalidateQueries({ queryKey: ['allAppointments'] });
-      queryClient.invalidateQueries({ queryKey: ['todaysAppointments'] });
-    },
-    onError: (error) => {
-      toast.error(error.message);
+    onSuccess: (data) => {
+      if (data) {
+        toast.success("Appointment of this patient deleted successfully");
+        setappLeft(prev => prev - 1);
+        queryClient.invalidateQueries({ queryKey: ['allAppointments'] });
+        queryClient.invalidateQueries({ queryKey: ['todaysAppointments'] });
+      }
     }
   })
   const { mutate: step1Call, isPending: step1Loading } = useMutation({
@@ -52,16 +52,16 @@ const UpdatePatientDetails = () => {
         const index = error.response.data.indexOf("<pre>")
         const Lastindex = error.response.data.indexOf("<br>")
         const errMsg = error.response.data.substring(index + 5, Lastindex);
-        throw new Error(errMsg);
+        toast.error(errMsg)
+
       }
     },
     onSuccess: (data) => {
-      toast.success("Step-1 completed successfully");
-      if (appDetails && appDetails.length > 0) deleteApp(appDetails[0]._id)
-      queryClient.invalidateQueries({ queryKey: ['allPatients'] });
-    },
-    onError: (error) => {
-      toast.error(error.message);
+      if (data) {
+        toast.success("Step-1 completed successfully");
+        if (appDetails && appDetails.length > 0) deleteApp(appDetails[0]._id)
+        queryClient.invalidateQueries({ queryKey: ['allPatients'] });
+      }
     }
   })
 
@@ -71,16 +71,16 @@ const UpdatePatientDetails = () => {
         const res = await axios.post('/api/v1/users/receptionist/addMedicine', { ...medicine, "patient_name": formData.patient_name });
         return res.data.data;
       } catch (error) {
-        throw new Error(error);
+        toast.error(errMsg)
+
       }
     },
     onSuccess: (data) => {
-      toast.success("Medcine added successfully");
-      setStep2Submit(true);
-      queryClient.invalidateQueries({ queryKey: ['allPatients'] })
-    },
-    onError: (error) => {
-      toast.error(error.message);
+      if (data) {
+        toast.success("Medcine added successfully");
+        setStep2Submit(true);
+        queryClient.invalidateQueries({ queryKey: ['allPatients'] })
+      }
     }
   })
 
@@ -90,16 +90,16 @@ const UpdatePatientDetails = () => {
         const res = await axios.post('/api/v1/users/receptionist/addReport', report);
         return res.data.data;
       } catch (error) {
-        throw new Error(error);
+        toast.error(errMsg)
+
       }
     },
     onSuccess: (data) => {
-      toast.success("Report added successfully");
-      queryClient.invalidateQueries({ queryKey: ['allPatients'] })
-      setStep2Submit(true);
-    },
-    onError: (error) => {
-      toast.error(error.message);
+      if (data) {
+        toast.success("Report added successfully");
+        queryClient.invalidateQueries({ queryKey: ['allPatients'] })
+        setStep2Submit(true);
+      }
     }
   })
 
@@ -109,15 +109,14 @@ const UpdatePatientDetails = () => {
         const res = await axios.post('/api/v1/users/receptionist/addPaymentDetails', payment);
         return res.data.data;
       } catch (error) {
-        throw new Error(error);
+        toast.error(errMsg)
       }
     },
     onSuccess: (data) => {
-      toast.success("Payment added successfully");
-      queryClient.invalidateQueries({ queryKey: ['allPatients'] })
-    },
-    onError: (error) => {
-      toast.error(error.message);
+      if (data) {
+        toast.success("Payment added successfully");
+        queryClient.invalidateQueries({ queryKey: ['allPatients'] })
+      }
     }
   })
 

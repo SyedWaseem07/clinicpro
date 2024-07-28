@@ -29,15 +29,12 @@ const Navbar = ({ user, theme, setTheme }) => {
         const index = error?.response?.data?.indexOf("<pre>")
         const Lastindex = error?.response?.data?.indexOf("<br>")
         const errMsg = error?.response?.data?.substring(index + 5, Lastindex);
-        throw new Error(errMsg);
+        toast.error(errMsg);
       }
     },
-    onSuccess: () => {
-      toast.success("Logout successful");
+    onSuccess: (data) => {
+      if (data) toast.success("Logout successful");
       queryClient.invalidateQueries({ queryKey: ['authUser'] })
-    },
-    onError: (error) => {
-      toast.error(error.message)
     }
   })
 

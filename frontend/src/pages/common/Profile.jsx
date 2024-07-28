@@ -25,15 +25,12 @@ const Profile = () => {
         const index = error.response.data.indexOf("<pre>")
         const Lastindex = error.response.data.indexOf("<br>")
         const errMsg = error.response.data.substring(index + 5, Lastindex);
-        throw new Error(errMsg);
+        toast.error(errMsg)
       }
     },
-    onSuccess: () => {
-      toast.success("Profile Updated Successfully");
+    onSuccess: (data) => {
+      if (data) toast.success("Profile Updated Successfully");
       queryClient.invalidateQueries({ queryKey: ['authUser'] });
-    },
-    onError: (error) => {
-      toast.error(error.message);
     }
   })
 
@@ -46,16 +43,15 @@ const Profile = () => {
         const index = error.response.data.indexOf("<pre>")
         const Lastindex = error.response.data.indexOf("<br>")
         const errMsg = error.response.data.substring(index + 5, Lastindex);
-        throw new Error(errMsg);
+        toast.error(errMsg)
       }
     },
-    onSuccess: () => {
-      toast.success("Avatar Updated Successfully");
-      queryClient.invalidateQueries({ queryKey: ['authUser'] });
-      setShowSave(false)
-    },
-    onError: (error) => {
-      toast.error(error.message);
+    onSuccess: (data) => {
+      if (data) {
+        toast.success("Avatar Updated Successfully");
+        queryClient.invalidateQueries({ queryKey: ['authUser'] });
+        setShowSave(false)
+      }
     }
   })
 

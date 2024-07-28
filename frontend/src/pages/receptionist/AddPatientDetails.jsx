@@ -30,18 +30,16 @@ const AddPatientDetails = () => {
         const index = error.response.data.indexOf("<pre>")
         const Lastindex = error.response.data.indexOf("<br>")
         const errMsg = error.response.data.substring(index + 5, Lastindex);
-        throw new Error(errMsg);
+        toast.error(errMsg);
       }
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      if (data) { }
       toast.success("Appointment of this patient deleted successfully");
       setappLeft(prev => prev - 1);
       queryClient.invalidateQueries({ queryKey: ['allAppointments'] });
       queryClient.invalidateQueries({ queryKey: ['todaysAppointments'] });
       setStep1Submit(true);
-    },
-    onError: (error) => {
-      toast.error(error.message);
     }
   })
   const { mutate: step1Call, isPending: step1Loading } = useMutation({
@@ -53,18 +51,16 @@ const AddPatientDetails = () => {
         const index = error.response.data.indexOf("<pre>")
         const Lastindex = error.response.data.indexOf("<br>")
         const errMsg = error.response.data.substring(index + 5, Lastindex);
-        throw new Error(errMsg);
+        toast.error(errMsg);
       }
     },
     onSuccess: (data) => {
-      toast.success("Step-1 completed successfully");
-      if (appDetails) deleteApp(appDetails[0]._id)
-      queryClient.invalidateQueries({ queryKey: ['allPatients'] });
-      setStep1Submit(true);
-    },
-    onError: (error) => {
-      console.log("abjvhdbgjhmj")
-      toast.error(error.message);
+      if (data) {
+        toast.success("Step-1 completed successfully");
+        if (appDetails) deleteApp(appDetails[0]._id)
+        queryClient.invalidateQueries({ queryKey: ['allPatients'] });
+        setStep1Submit(true);
+      }
     }
   })
 
@@ -77,16 +73,16 @@ const AddPatientDetails = () => {
         const index = error.response.data.indexOf("<pre>")
         const Lastindex = error.response.data.indexOf("<br>")
         const errMsg = error.response.data.substring(index + 5, Lastindex);
-        throw new Error(errMsg);
+        toast.error(errMsg);
+
       }
     },
     onSuccess: (data) => {
-      toast.success("Medcine added successfully");
-      queryClient.invalidateQueries({ queryKey: ['allPatients'] });
-      setStep2Submit(true);
-    },
-    onError: (error) => {
-      toast.error(error.message);
+      if (data) {
+        toast.success("Medcine added successfully");
+        queryClient.invalidateQueries({ queryKey: ['allPatients'] });
+        setStep2Submit(true);
+      }
     }
   })
 
@@ -99,16 +95,15 @@ const AddPatientDetails = () => {
         const index = error.response.data.indexOf("<pre>")
         const Lastindex = error.response.data.indexOf("<br>")
         const errMsg = error.response.data.substring(index + 5, Lastindex);
-        throw new Error(errMsg);
+        toast.error(errMsg);
       }
     },
     onSuccess: (data) => {
-      toast.success("Report added successfully");
-      queryClient.invalidateQueries({ queryKey: ['allPatients'] })
-      setStep2Submit(true);
-    },
-    onError: (error) => {
-      toast.error(error.message);
+      if (data) {
+        toast.success("Report added successfully");
+        queryClient.invalidateQueries({ queryKey: ['allPatients'] })
+        setStep2Submit(true);
+      }
     }
   })
 
@@ -121,15 +116,14 @@ const AddPatientDetails = () => {
         const index = error.response.data.indexOf("<pre>")
         const Lastindex = error.response.data.indexOf("<br>")
         const errMsg = error.response.data.substring(index + 5, Lastindex);
-        throw new Error(errMsg);
+        toast.error(errMsg);
       }
     },
     onSuccess: (data) => {
-      toast.success("Payment added successfully");
-      queryClient.invalidateQueries({ queryKey: ['allPatients'] })
-    },
-    onError: (error) => {
-      toast.error(error.message);
+      if (data) {
+        toast.success("Payment added successfully");
+        queryClient.invalidateQueries({ queryKey: ['allPatients'] })
+      }
     }
   })
   const [formData, setFormData] = useState({

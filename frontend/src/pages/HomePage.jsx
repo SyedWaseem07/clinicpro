@@ -19,16 +19,15 @@ const HomePage = ({ theme, setTheme, user }) => {
         const index = error.response.data.indexOf("<pre>")
         const Lastindex = error.response.data.indexOf("<br>")
         const errMsg = error.response.data.substring(index + 5, Lastindex);
-        throw new Error(errMsg);
+        toast.error(errMsg)
       }
     },
     onSuccess: (data) => {
-      setLoading(false);
-      toast.success(`You are now ${data.data.data.role.charAt(0).toUpperCase() + data.data.data.role.substring(1)} of ClinicPro. Click on right side ${data.data.data.role.charAt(0).toUpperCase() + data.data.data.role.substring(1) + "'s Home button to explore"} `)
+      if (data) {
+        setLoading(false);
+        toast.success(`You are now ${data.data.data.role.charAt(0).toUpperCase() + data.data.data.role.substring(1)} of ClinicPro. Click on right side ${data.data.data.role.charAt(0).toUpperCase() + data.data.data.role.substring(1) + "'s Home button to explore"} `)
+      }
       queryClient.invalidateQueries({ queryKey: ['authUser'] })
-    },
-    onError: (error) => {
-      toast.error(error.message)
     }
   })
   const { mutate: logout, isPending: logoutPending } = useMutation({
@@ -40,15 +39,12 @@ const HomePage = ({ theme, setTheme, user }) => {
         const index = error?.response?.data?.indexOf("<pre>")
         const Lastindex = error?.response?.data?.indexOf("<br>")
         const errMsg = error?.response?.data?.substring(index + 5, Lastindex);
-        throw new Error(errMsg);
+        toast.error(errMsg)
       }
     },
-    onSuccess: () => {
-      setLoading(true);
+    onSuccess: (data) => {
+      if (data) setLoading(true);
       queryClient.invalidateQueries({ queryKey: ['authUser'] })
-    },
-    onError: (error) => {
-      toast.error(error.message)
     }
   })
   const handleDoctorClick = () => {
