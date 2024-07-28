@@ -30,7 +30,6 @@ const LoginPage = ({ theme, setTheme, user }) => {
       queryClient.invalidateQueries({ queryKey: ['authUser'] })
     },
     onError: (error) => {
-      console.log(error.message)
       toast.error(error.message)
     }
   })
