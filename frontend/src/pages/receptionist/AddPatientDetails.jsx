@@ -27,10 +27,7 @@ const AddPatientDetails = () => {
         const res = await axios.delete(`/api/v1/users/receptionist/deleteAppointment/${appId}`);
         return res.data.data;
       } catch (error) {
-        const index = error.response.data.indexOf("<pre>")
-        const Lastindex = error.response.data.indexOf("<br>")
-        const errMsg = error.response.data.substring(index + 5, Lastindex);
-        toast.error(errMsg);
+        toast.error("Something went wrong")
       }
     },
     onSuccess: (data) => {
@@ -48,10 +45,11 @@ const AddPatientDetails = () => {
         const res = await axios.post('/api/v1/users/receptionist/addPatientDetails', { ...formData });
         return res.data.data;
       } catch (error) {
-        const index = error.response.data.indexOf("<pre>")
-        const Lastindex = error.response.data.indexOf("<br>")
-        const errMsg = error.response.data.substring(index + 5, Lastindex);
-        toast.error(errMsg);
+        const stat = error.response.status;
+        if (stat === 400) toast.error("All feilds are required");
+        else if (stat === 404) toast.error("Unable to store patient details");
+        else if (stat === 409) toast.error("Patient already exist");
+        else toast.error("Something went wrong");
       }
     },
     onSuccess: (data) => {
@@ -70,10 +68,9 @@ const AddPatientDetails = () => {
         const res = await axios.post('/api/v1/users/receptionist/addMedicine', { ...medicine });
         return res.data.data;
       } catch (error) {
-        const index = error.response.data.indexOf("<pre>")
-        const Lastindex = error.response.data.indexOf("<br>")
-        const errMsg = error.response.data.substring(index + 5, Lastindex);
-        toast.error(errMsg);
+        const stat = error.response.status;
+        if (stat === 400) toast.error("All feilds are required");
+        else toast.error("Unable to store medicine");
 
       }
     },
@@ -92,10 +89,9 @@ const AddPatientDetails = () => {
         const res = await axios.post('/api/v1/users/receptionist/addReport', report);
         return res.data.data;
       } catch (error) {
-        const index = error.response.data.indexOf("<pre>")
-        const Lastindex = error.response.data.indexOf("<br>")
-        const errMsg = error.response.data.substring(index + 5, Lastindex);
-        toast.error(errMsg);
+        const stat = error.response.status;
+        if (stat === 400) toast.error("All feilds are required");
+        else toast.error("Unable to store report");
       }
     },
     onSuccess: (data) => {
@@ -113,10 +109,9 @@ const AddPatientDetails = () => {
         const res = await axios.post('/api/v1/users/receptionist/addPaymentDetails', payment);
         return res.data.data;
       } catch (error) {
-        const index = error.response.data.indexOf("<pre>")
-        const Lastindex = error.response.data.indexOf("<br>")
-        const errMsg = error.response.data.substring(index + 5, Lastindex);
-        toast.error(errMsg);
+        const stat = error.response.status;
+        if (stat === 400) toast.error("All feilds are required");
+        else toast.error("Unable to store payment");
       }
     },
     onSuccess: (data) => {

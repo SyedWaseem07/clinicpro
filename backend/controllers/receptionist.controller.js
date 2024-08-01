@@ -48,7 +48,7 @@ const addNewPatientDetails = asyncHandler(async (req, res) => {
     last_visited = new Date(last_visited);
 
     const existingPatient = await Visited_Patient_Details.findOne({ patient_name });
-    if (existingPatient) throw new ApiError(400, "Patient already exist");
+    if (existingPatient) throw new ApiError(409, "Patient already exist");
     const patientDetails = await Visited_Patient_Details.create({
         patient_name, mobile_no, age, weight, gender, symptoms, last_visited
     })
@@ -133,7 +133,7 @@ const addNewPatientDetails = asyncHandler(async (req, res) => {
 
     ])
 
-    if (!fullPatientDetails?.length) throw new ApiError(404, "Patient does not exist")
+    if (!fullPatientDetails?.length) throw new ApiError(404, "Unable to add patient")
 
     return res.status(200).json(new ApiResponse(200, fullPatientDetails[0], "Patient details fetched successfully"));
 })

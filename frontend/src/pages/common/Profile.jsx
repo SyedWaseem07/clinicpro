@@ -22,10 +22,9 @@ const Profile = () => {
         const res = await axios.post('/api/v1/users/updateProfile', { ...formData });
         return res.data.data;
       } catch (error) {
-        const index = error.response.data.indexOf("<pre>")
-        const Lastindex = error.response.data.indexOf("<br>")
-        const errMsg = error.response.data.substring(index + 5, Lastindex);
-        toast.error(errMsg)
+        const stat = error.response.status;
+        if (stat === 400) toast.error("All feilds are required except avatar");
+        else toast.error("Something went wrong");
       }
     },
     onSuccess: (data) => {
@@ -40,10 +39,9 @@ const Profile = () => {
         const res = await axios.post('/api/v1/users/changeAvatar', avatarData);
         return res.data.data;
       } catch (error) {
-        const index = error.response.data.indexOf("<pre>")
-        const Lastindex = error.response.data.indexOf("<br>")
-        const errMsg = error.response.data.substring(index + 5, Lastindex);
-        toast.error(errMsg)
+        const stat = error.response.status;
+        if (stat === 400) toast.error("Avatar is missing");
+        else toast.error("Error while uploading on cloudinary");
       }
     },
     onSuccess: (data) => {
@@ -103,10 +101,7 @@ const Profile = () => {
       toast.error("Enter valid 10 digit mobile no");
       return;
     }
-    toast.success("Profile updation is working successfully but I will not update in order to preserve direct login functionality given on homepage", {
-      duration: 5000,
-    });
-    // mutate();
+    mutate();
   }
 
   const handleChange = (e) => {

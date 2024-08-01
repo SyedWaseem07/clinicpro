@@ -27,10 +27,7 @@ const UpdatePatientDetails = () => {
         const res = await axios.delete(`/api/v1/users/receptionist/deleteAppointment/${appId}`);
         return res.data.data;
       } catch (error) {
-        const index = error.response.data.indexOf("<pre>")
-        const Lastindex = error.response.data.indexOf("<br>")
-        const errMsg = error.response.data.substring(index + 5, Lastindex);
-        toast.error(errMsg)
+        toast.error("Something went wrong")
 
       }
     },
@@ -49,11 +46,10 @@ const UpdatePatientDetails = () => {
         const res = await axios.post('/api/v1/users/receptionist/updatePatientDetails', { ...formData });
         return res.data.data;
       } catch (error) {
-        const index = error.response.data.indexOf("<pre>")
-        const Lastindex = error.response.data.indexOf("<br>")
-        const errMsg = error.response.data.substring(index + 5, Lastindex);
-        toast.error(errMsg)
-
+        const stat = error.response.status;
+        if (stat === 400) toast.error("All feilds are required");
+        else if (stat === 404) toast.error("Patient Does not exists");
+        else toast.error("Unable to update");
       }
     },
     onSuccess: (data) => {
@@ -71,8 +67,9 @@ const UpdatePatientDetails = () => {
         const res = await axios.post('/api/v1/users/receptionist/addMedicine', { ...medicine, "patient_name": formData.patient_name });
         return res.data.data;
       } catch (error) {
-        toast.error(errMsg)
-
+        const stat = error.response.status;
+        if (stat === 400) toast.error("All feilds are required");
+        else toast.error("Unable to store medicine");
       }
     },
     onSuccess: (data) => {
@@ -90,8 +87,9 @@ const UpdatePatientDetails = () => {
         const res = await axios.post('/api/v1/users/receptionist/addReport', report);
         return res.data.data;
       } catch (error) {
-        toast.error(errMsg)
-
+        const stat = error.response.status;
+        if (stat === 400) toast.error("All feilds are required");
+        else toast.error("Unable to store report");
       }
     },
     onSuccess: (data) => {
@@ -109,7 +107,9 @@ const UpdatePatientDetails = () => {
         const res = await axios.post('/api/v1/users/receptionist/addPaymentDetails', payment);
         return res.data.data;
       } catch (error) {
-        toast.error(errMsg)
+        const stat = error.response.status;
+        if (stat === 400) toast.error("All feilds are required");
+        else toast.error("Unable to store payment");
       }
     },
     onSuccess: (data) => {

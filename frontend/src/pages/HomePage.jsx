@@ -10,6 +10,18 @@ import Footer from '../components/Footer'
 const HomePage = ({ theme, setTheme, user }) => {
   const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
+  const { data: staffInfo, isSuccess } = useQuery({
+    queryKey: ['StaffData'],
+    queryFn: async () => {
+      try {
+        const res = await axios.get("/api/v1/users/getStaffInfo");
+        return res.data.data;
+      } catch (error) {
+        toast.error("Unable to get staff info")
+        return [];
+      }
+    }
+  })
   const { mutate, isPending } = useMutation({
     mutationFn: async ({ username, password, role }) => {
       try {
@@ -57,8 +69,9 @@ const HomePage = ({ theme, setTheme, user }) => {
         return;
       }
     }
-    if (!logoutPending) {
-      mutate({ username: "testdoctor", password: "Test@123", role: "doctor" });
+    if (!logoutPending && staffInfo) {
+      const { username, role } = staffInfo.filter(item => item.role === "doctor")[0]
+      mutate({ username, password: "Test@123", role });
     }
   }
 
@@ -72,7 +85,10 @@ const HomePage = ({ theme, setTheme, user }) => {
         return;
       }
     }
-    mutate({ username: "testreceptionist", password: "Test@1234", role: "receptionist" })
+    if (!logoutPending && staffInfo) {
+      const { username, role } = staffInfo.filter(item => item.role === "receptionist")[0]
+      mutate({ username, password: "Test@1234", role });
+    }
   }
   if (loading) return <div className='flex justify-center items-center w-full h-screen'>
     <span className="loading loading-ring text-primary loading-lg"></span>

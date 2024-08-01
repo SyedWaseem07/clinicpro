@@ -13,10 +13,10 @@ const AddAppointment = () => {
         const res = await axios.post("/api/v1/users/receptionist/addAppointment", data);
         return res.data.data;
       } catch (error) {
-        const index = error.response.data.indexOf("<pre>")
-        const Lastindex = error.response.data.indexOf("<br>")
-        const errMsg = error.response.data.substring(index + 5, Lastindex);
-        toast.error(errMsg)
+        const stat = error.response.status;
+        if (stat === 400) toast.error("All feilds are required");
+        else if (stat === 409) toast.error("Appointment already booked");
+        else toast.error("Something went wrong");
       }
     },
     onSuccess: (data) => {

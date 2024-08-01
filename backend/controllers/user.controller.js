@@ -140,7 +140,7 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 
     const isPasswordCorrect = await user.isPasswordCorrect(oldPassword)
 
-    if (!isPasswordCorrect) throw new ApiError(400, "Invalid password")
+    if (!isPasswordCorrect) throw new ApiError(400, "Invalid old password")
 
     user.password = newPassword
     await user.save({ validateBeforeSave: false })
@@ -167,7 +167,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     await cloudinary.uploader.destroy(userToUpdate.avatar.split("/").pop().split(".")[0]);
     const avatar = await uploadOnCloudinary(localPath)
 
-    if (!avatar.url) return new ApiError(400, "Error while uploading on cloudinary")
+    if (!avatar.url) return new ApiError(500, "Error while uploading on cloudinary")
 
     const user = await User.findByIdAndUpdate(req.user?._id,
         {
@@ -301,6 +301,7 @@ const getRegisteredStaff = asyncHandler(async (req, res) => {
     const staff = await User.find();
     return res.status(200).json(new ApiResponse(200, staff, "Staff data fetched successfully"));
 })
+
 export {
     registerUser,
     loginUser,

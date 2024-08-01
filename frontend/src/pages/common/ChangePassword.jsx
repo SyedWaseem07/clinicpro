@@ -37,7 +37,8 @@ const ChangePassword = () => {
       toast.error("New Password must be at least 6 characters, with at least one uppercase letter and one special character")
       return;
     }
-    mutate();
+    toast.success("Change password is working fine but password will not change inorder to preserve direct login functionality")
+    // mutate();
   }
 
   const handleChange = (e) => {
